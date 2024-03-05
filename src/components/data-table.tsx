@@ -200,7 +200,7 @@ export const DataTable =()=> {
   })
 
   return (
-    <div className="w-full px-12">
+    <div className="w-full md:px-12 px-2 pb-10">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter Amino Acids..."
