@@ -15,7 +15,7 @@ export const POST = async (req: Request) => {
     }
 };
 
-function generateRandomSequences(sequenceLength: number, numberOfSequences: number, excluded_amino_acids: string[] = []) {
+const generateRandomSequences = (sequenceLength: number, numberOfSequences: number, excluded_amino_acids: string[] = []) => {
     const randomSequences = [];
 
     for (let n = 0; n < numberOfSequences; n++) {
@@ -26,16 +26,26 @@ function generateRandomSequences(sequenceLength: number, numberOfSequences: numb
     return randomSequences;
 }
 
-function generateRandomSequence(sequenceLength: number, excluded_amino_acids: string[] = []) {
+const generateRandomSequence =(sequenceLength: number, excluded_amino_acids: string[] = []) => {
     const aminoAcids = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y'];
     let randomSequence = '';
+    let entire_sequence = {};
 
     for (let i = 0; i < sequenceLength; i++) {
         const filteredAminoAcids = aminoAcids.filter(acid => !excluded_amino_acids.includes(acid));
 
         const randomAminoAcid = filteredAminoAcids[random.int(0, filteredAminoAcids.length - 1)].toUpperCase();
 
+        const phi = random.float(0, 360);
+        const chi = random.float(0, 360);
         randomSequence += randomAminoAcid;
+        
+        entire_sequence = {
+            id: i,
+            sequence: randomSequence,
+            phi_angle: phi,
+            chi_angle: chi
+        }
     }
-    return randomSequence;
+    return entire_sequence;
 }
