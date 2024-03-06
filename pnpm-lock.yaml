@@ -19,6 +19,7 @@ specifiers:
   eslint-config-next: 14.1.2
   next: 14.1.2
   postcss: ^8
+  random: ^4.1.0
   react: ^18
   react-dom: ^18
   tailwind-merge: ^2.2.1
@@ -38,6 +39,7 @@ dependencies:
   class-variance-authority: 0.7.0
   clsx: 2.1.0
   next: 14.1.2_biqbaboplfbrettd7655fr4n2y
+  random: 4.1.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   tailwind-merge: 2.2.1
@@ -2856,6 +2858,13 @@ packages:
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
+  /random/4.1.0:
+    resolution: {integrity: sha512-6Ajb7XmMSE9EFAMGC3kg9mvE7fGlBip25mYYuSMzw/uUSrmGilvZo2qwX3RnTRjwXkwkS+4swse9otZ92VjAtQ==}
+    engines: {node: '>=14'}
+    dependencies:
+      seedrandom: 3.0.5
+    dev: false
+
   /react-dom/18.2.0_react@18.2.0:
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
@@ -3031,6 +3040,10 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
+
+  /seedrandom/3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
     dev: false
 
   /semver/6.3.1:
