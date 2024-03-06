@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useEffect , useState } from "react"
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -39,30 +40,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import axios from "axios"
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    sequence: "ICCWMNKQED",
-    phi_angle : 110.5,
-    chi_angle : 90.5
-  },
-  {
-    id: "3u1reuv4",
-    sequence: "WFDWYAQFY",
-    phi_angle : 70.5,
-    chi_angle : 60.5,
-  },
-]
+// const data: Sequence[] = [
+//   {
+//     id: "m5gr84i9",
+//     sequence: "ICCWMNKQED",
+//     phi_angle : 110.5,
+//     chi_angle : 90.5
+//   },
+//   {
+//     id: "3u1reuv4",
+//     sequence: "WFDWYAQFY",
+//     phi_angle : 70.5,
+//     chi_angle : 60.5,
+//   },
+// ]
 
-export type Payment = {
-  id: string
+export type Sequence = {
+  id: number
   sequence: string
   phi_angle: number
   chi_angle: number
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Sequence>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -105,7 +107,7 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("sequence")}</div>,
+    cell: ({ row }) => <div className="uppercase ml-4">{row.getValue("sequence")}</div>,
   },
   {
     accessorKey: "phi_angle",
@@ -120,7 +122,7 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase ml-8">{row.getValue("phi_angle")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("phi_angle")}</div>,
   },
   {
     accessorKey: "chi_angle",
@@ -128,14 +130,14 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => {
       const chi_angle = parseFloat(row.getValue("chi_angle"))
 
-      return <div className="text-right font-medium mr-4">{chi_angle}</div>
+      return <div className="text-right font-medium">{chi_angle}</div>
     },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const sequence = row.original
 
       return (
         <DropdownMenu>
@@ -148,7 +150,7 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(sequence.sequence)}
             >
               Copy sequence
             </DropdownMenuItem>
@@ -163,16 +165,17 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 export const DataTable =()=> {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const [sequences , setSequences] = useState([]);
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
-    data,
+    data: sequences,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -190,14 +193,32 @@ export const DataTable =()=> {
     },
   })
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios.get('/api/generate_sequences')
+        .then(data => {
+            console.log(`The list of generated random sequences : ${data}`)
+            setSequences(data.data);
+        })
+        .catch(error => {
+            console.log(`There was an error sending the Get request: ${error}`)
+        })
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="w-full md:px-12 px-2 pb-10">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter Amino Acids..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("sequence")?.getFilterValue() as string) ?? ""}
           onChange={(event: { target: { value: any } }) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("sequence")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
