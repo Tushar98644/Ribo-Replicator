@@ -34,7 +34,19 @@ export const Tab = () => {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="name">Amino Acids(to be excluded)</Label>
-              <Input id="name" placeholder="lys,arg..."/>
+              <Input id="name" placeholder="A,K..."/>
+            </div>
+          </CardContent>
+          <CardContent className="space-y-2">
+            <div className="space-y-1">
+              <Label htmlFor="name">Sequence Length</Label>
+              <Input id="name" placeholder="5"/>
+            </div>
+          </CardContent>
+          <CardContent className="space-y-2">
+            <div className="space-y-1">
+              <Label htmlFor="name">Number of Sequences</Label>
+              <Input id="name" placeholder="10"/>
             </div>
           </CardContent>
           <CardFooter>
@@ -47,7 +59,7 @@ export const Tab = () => {
           <CardHeader>
             <CardTitle>File Input</CardTitle>
             <CardDescription>
-                Provide a txt file with the amino acid sequences that you want to be excluded. Click Generate when you are done.
+                Provide a txt file with the amino acid sequences that you want to be excluded , the sequence length and the number of sequences. Click Generate when you are done.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
