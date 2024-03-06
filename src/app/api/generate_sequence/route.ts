@@ -35,17 +35,18 @@ const generateRandomSequence =(sequenceLength: number, excluded_amino_acids: str
         const filteredAminoAcids = aminoAcids.filter(acid => !excluded_amino_acids.includes(acid));
 
         const randomAminoAcid = filteredAminoAcids[random.int(0, filteredAminoAcids.length - 1)].toUpperCase();
-
-        const phi = random.float(0, 360);
-        const chi = random.float(0, 360);
         randomSequence += randomAminoAcid;
-        
-        entire_sequence = {
-            id: i,
-            sequence: randomSequence,
-            phi_angle: phi,
-            chi_angle: chi
-        }
     }
+
+    const phi = random.float(0, 360);
+    const chi = random.float(0, 360);
+
+    entire_sequence = {
+        id: random.int(0, 1000),
+        sequence: randomSequence,
+        phi_angle: phi,
+        chi_angle: chi
+    }
+
     return entire_sequence;
 }
