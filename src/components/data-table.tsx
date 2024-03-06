@@ -43,23 +43,23 @@ import {
 const data: Payment[] = [
   {
     id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
+    sequence: "ICCWMNKQED",
+    phi_angle : 110.5,
+    chi_angle : 90.5
   },
   {
     id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
+    sequence: "WFDWYAQFY",
+    phi_angle : 70.5,
+    chi_angle : 60.5,
   },
 ]
 
 export type Payment = {
   id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
+  sequence: string
+  phi_angle: number
+  chi_angle: number
 }
 
 export const columns: ColumnDef<Payment>[] = [
@@ -86,40 +86,49 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "id",
+    header: "Id",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("id")}</div>
     ),
   },
   {
-    accessorKey: "email",
+    accessorKey: "sequence",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
-          <CaretSortIcon className="ml-2 h-4 w-4" />
+          Sequence
+          <CaretSortIcon className="" />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("sequence")}</div>,
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "phi_angle",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Phi Angle
+          <CaretSortIcon className="h-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="lowercase ml-8">{row.getValue("phi_angle")}</div>,
+  },
+  {
+    accessorKey: "chi_angle",
+    header: () => <div className="text-right">Chi Angle</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
+      const chi_angle = parseFloat(row.getValue("chi_angle"))
 
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
+      return <div className="text-right font-medium mr-4">{chi_angle}</div>
     },
   },
   {
@@ -141,7 +150,7 @@ export const columns: ColumnDef<Payment>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              Copy payment ID
+              Copy sequence
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>

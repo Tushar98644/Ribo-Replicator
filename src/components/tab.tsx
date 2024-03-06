@@ -20,21 +20,21 @@ export const Tab = () => {
   return (
     <Tabs defaultValue="account" className="w-[400px] px-6">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="account">Account</TabsTrigger>
-        <TabsTrigger value="password">Password</TabsTrigger>
+        <TabsTrigger value="account">Text Input</TabsTrigger>
+        <TabsTrigger value="password">File Input</TabsTrigger>
       </TabsList>
       <TabsContent value="account">
         <Card>
           <CardHeader>
-            <CardTitle>Account</CardTitle>
+            <CardTitle>Generator</CardTitle>
             <CardDescription>
-              Make changes to your account here. Click Generate when you are done.
+              List the amino acid sequences that you want to be excluded. Click Generate when you are done.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="name">Amino Acids(to be excluded)</Label>
-              <Input id="name" defaultValue="lys,arg..."/>
+              <Input id="name" placeholder="lys,arg..."/>
             </div>
           </CardContent>
           <CardFooter>
@@ -45,23 +45,19 @@ export const Tab = () => {
       <TabsContent value="password">
         <Card>
           <CardHeader>
-            <CardTitle>Password</CardTitle>
+            <CardTitle>File Input</CardTitle>
             <CardDescription>
-              Change your password here. After saving, you will be logged out.
+                Provide a txt file with the amino acid sequences that you want to be excluded. Click Generate when you are done.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
+              <Label htmlFor="current">Input</Label>
+              <Input id="current" type="file" />
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Save password</Button>
+            <Button>Generate</Button>
           </CardFooter>
         </Card>
       </TabsContent>
