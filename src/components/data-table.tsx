@@ -42,21 +42,6 @@ import {
 } from "@/components/ui/table"
 import axios from "axios"
 
-// const data: Sequence[] = [
-//   {
-//     id: "m5gr84i9",
-//     sequence: "ICCWMNKQED",
-//     phi_angle : 110.5,
-//     chi_angle : 90.5
-//   },
-//   {
-//     id: "3u1reuv4",
-//     sequence: "WFDWYAQFY",
-//     phi_angle : 70.5,
-//     chi_angle : 60.5,
-//   },
-// ]
-
 export type Sequence = {
   id: number
   sequence: string

@@ -40,11 +40,10 @@ export const Tab = () => {
                 'Content-Type': 'application/json'
             }
         }
-        router.push('/');
         axios.post('/api/generate_sequences', data , config)
             .then(response => {
                 console.log(`The request was successful: ${response}`);
-                
+                router.push('/result');
             })
             .catch(error => {
                 console.log(`There was an error sending the request: ${error}`)
