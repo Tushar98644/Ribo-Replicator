@@ -52,6 +52,12 @@ export const navItems: NavItem[] = [
     label: "user",
   },
   {
+    title: "Generator",
+    href: "/dashboard/generator",
+    icon: "generate",
+    label: "generator",
+  },
+  {
     title: "Employee",
     href: "/dashboard/employee",
     icon: "employee",
@@ -70,9 +76,9 @@ export const navItems: NavItem[] = [
     label: "kanban",
   },
   {
-    title: "Login",
+    title: "Logout",
     href: "/",
     icon: "login",
-    label: "login",
+    label: "logout",
   },
 ];

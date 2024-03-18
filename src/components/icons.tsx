@@ -1,3 +1,4 @@
+import { generateUploadButton } from "@uploadthing/react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -29,6 +30,7 @@ import {
   User2Icon,
   UserX2Icon,
   X,
+  Play
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -60,6 +62,7 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  generate: Play,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
