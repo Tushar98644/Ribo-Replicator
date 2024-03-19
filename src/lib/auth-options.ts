@@ -37,10 +37,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-//   pages: {
-//     signIn: "/", //sigin page
-//   },
   secret: process.env.SECRET,
   adapter: MongoDBAdapter(clientPromise),
-
 };
