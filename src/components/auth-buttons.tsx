@@ -6,7 +6,6 @@ import { Button } from "./ui/button";
 import { Icons } from "./icons";
 
 export const GithubSignInButton = () => {
-  const searchParams = useSearchParams();
   return (
     <Button
       className="w-full"
@@ -26,18 +25,13 @@ export const GithubSignInButton = () => {
 }
 
 export const GoogleSignInButton = () => {
-  const searchParams = useSearchParams();
-
   return (
     <Button
       className="w-full"
       variant="outline"
       type="button"
       onClick={() =>
-        signIn(
-          // "google", 
-        // { callbackUrl: callbackUrl ?? "/dashboard" }
-        )
+        signIn()
       }
     >
       <Icons.google className="mr-2 h-4 w-4" />
