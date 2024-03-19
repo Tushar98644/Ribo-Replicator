@@ -1,4 +1,3 @@
-import { generateUploadButton } from "@uploadthing/react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -30,7 +29,7 @@ import {
   User2Icon,
   UserX2Icon,
   X,
-  Play
+  Play,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -82,4 +81,25 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
+  google: ({ ...props }: LucideProps) => (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      data-prefix="fab"
+      data-icon="google"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 488 512"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M244 8C110 8 0 118 0 252c0 108 70 199 168 232 12 2 16-5 16-11 0-6-1-44-1-66H85c-1 0-3 0-4 0-34 0-61 28-61 61 0 34 24 58 58 58 33 0 54-23 58-58
+        2-15 3-31 3-47 0-72 41-111 101-111 58 0 91 42 91 82 0 60-30 93-66 93-20 0-34-15-30-35h66c-36 0-84-38-84-92 0-56 50-111 145-111 84 0 133 50 133 123 0 74-44
+        128-108 128-22 0-42-15-36-39l87-341c3-13-10-24-23-19L244 8z"
+
+      ></path>
+    </svg>
+  )
+
 };
