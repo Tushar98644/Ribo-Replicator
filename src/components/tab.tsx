@@ -43,7 +43,7 @@ export const Tab = () => {
         axios.post('/api/generate_sequences', data , config)
             .then(response => {
                 console.log(`The request was successful: ${response}`);
-                router.push('/result');
+                router.push('/dashboard/result');
             })
             .catch(error => {
                 console.log(`There was an error sending the request: ${error}`)
