@@ -3,8 +3,8 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import Providers from "@/components/layout/providers";
 import { getServerSession } from "next-auth";
+import { Provider } from "@/providers/Provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -29,10 +29,10 @@ export default async function RootLayout({
         "min-h-screen bg-background font-sans antialiased",
         fontSans.variable
       )}>
-        <Providers session={session}>
+        <Provider session={session}>
           <Toaster />
           {children}
-        </Providers>
+        </Provider>
       </body>
     </html>
   );
