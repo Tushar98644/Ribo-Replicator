@@ -1,6 +1,22 @@
-import { authOptions } from "@/lib/auth-options";
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+import clientPromise from "@/lib/mongodb";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 
-const handler = NextAuth(authOptions);
+export const authOptions = {
+    providers: [
+        GithubProvider({
+            clientId: process.env.GITHUB_ID as string,
+            clientSecret: process.env.GITHUB_SECRET as string,
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID as string,
+            clientSecret: process.env.GOOGLE_SECRET as string,
+        }),
+    ],
+    secret: process.env.SECRET,
+    adapter: MongoDBAdapter(clientPromise),
+};
 
-export { handler as GET, handler as POST };
+export default NextAuth(authOptions);

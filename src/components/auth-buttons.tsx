@@ -7,8 +7,6 @@ import { Icons } from "./icons";
 
 export const GithubSignInButton = () => {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-
   return (
     <Button
       className="w-full"
@@ -29,7 +27,6 @@ export const GithubSignInButton = () => {
 
 export const GoogleSignInButton = () => {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
 
   return (
     <Button

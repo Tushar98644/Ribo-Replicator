@@ -25,7 +25,7 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
+  // const callbackUrl = searchParams.get("callbackUrl");
   const [loading, setLoading] = useState(false);
 
   const form = useForm<UserFormValue>({
@@ -35,7 +35,7 @@ export default function UserAuthForm() {
   const onSubmit = async (data: UserFormValue) => {
     signIn("credentials", {
       email: data.email,
-      callbackUrl: callbackUrl ?? "/dashboard",
+      // callbackUrl: callbackUrl ?? "/dashboard",
     });
   };
 
