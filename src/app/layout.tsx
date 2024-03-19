@@ -3,7 +3,6 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import { getServerSession } from "next-auth";
 import { Provider } from "@/providers/Provider";
 
 const fontSans = FontSans({
@@ -21,7 +20,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
   return (
 
     <html lang="en">
@@ -29,7 +27,7 @@ export default async function RootLayout({
         "min-h-screen bg-background font-sans antialiased",
         fontSans.variable
       )}>
-        <Provider session={session}>
+        <Provider>
           <Toaster />
           {children}
         </Provider>
