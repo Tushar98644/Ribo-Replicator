@@ -1,5 +1,5 @@
 "use client";
-// import { Loader } from "@/components";
+import { Loader } from "@/components/loader/loader";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -27,15 +27,10 @@ export default function AuthenticationGuard({
             }
         }
 
-        if (session?.user?.email != process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
-            if (pathname === "/admin") {
-                router.push("/");
-            }
-        }
     }, [status, pathname, session?.user?.email, router]);
 
     if (status === "loading") {
-        return "Loading...";
+        return <Loader/>;
     }
 
     return <>{children}</>;
