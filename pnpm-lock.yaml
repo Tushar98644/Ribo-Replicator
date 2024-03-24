@@ -36,7 +36,7 @@ specifiers:
   date-fns: ^3.6.0
   eslint: ^8
   eslint-config-next: 14.1.2
-  lucide-react: ^0.360.0
+  lucide-react: ^0.363.0
   mongodb: ^6.5.0
   next: 14.1.2
   next-auth: ^4.24.7
@@ -86,7 +86,7 @@ dependencies:
   class-variance-authority: 0.7.0
   clsx: 2.1.0
   date-fns: 3.6.0
-  lucide-react: 0.360.0_react@18.2.0
+  lucide-react: 0.363.0_react@18.2.0
   mongodb: 6.5.0
   next: 14.1.2_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.24.7_wbwsvxcknkgv2b5ixqsqnp2gdq
@@ -3280,8 +3280,8 @@ packages:
     dependencies:
       yallist: 4.0.0
 
-  /lucide-react/0.360.0_react@18.2.0:
-    resolution: {integrity: sha512-MskvbEsAhD2zxgx/I05vXq1cjFQXrmhL97YFIi4wSaKH793ZMvU/Com4d+DE7OB3QMmZig1fY1q94aTX5skozw==}
+  /lucide-react/0.363.0_react@18.2.0:
+    resolution: {integrity: sha512-AlsfPCsXQyQx7wwsIgzcKOL9LwC498LIMAo+c0Es5PkHJa33xwmYAkkSoKoJWWWSYQEStqu58/jT4tL2gi32uQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:
