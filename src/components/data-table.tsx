@@ -48,6 +48,7 @@ export type Sequence = {
   phi_angle: number
   chi_angle: number
   rib_content: string
+  pdb_content: string
 }
 
 const generate_rib = async (rib_content: any) => {
@@ -86,6 +87,45 @@ const generate_rib = async (rib_content: any) => {
   }
   catch (e) {
     console.log(`Error in generating rib file: ${e}`)
+  }
+}
+
+const generate_pdb = async (pdb_content: any) => {
+  try {
+    const config = {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      responseType: 'blob' as 'json' // Set responseType to 'blob' to receive binary data
+  };
+    await axios.post('/api/pdb_output', pdb_content, config)
+      .then(response => {
+        const blob = new Blob([pdb_content], { type: 'application/octet-stream' });
+
+        // Create a URL for the Blob object
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a link element to trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'output.pdb'); 
+
+        // Append the link to the document body and click it programmatically
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up by removing the link and revoking the URL
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        console.log(`The request was successful: ${response}`);
+      })
+      .catch(error => {
+        console.log(`There was an error sending the request: ${error}`)
+      })
+    console.log("Pdb file generated")
+  }
+  catch (e) {
+    console.log(`Error in generating pdb file: ${e}`)
   }
 }
 
@@ -184,6 +224,7 @@ export const columns: ColumnDef<Sequence>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => generate_rib(sequence.rib_content)}>Download Rib file</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => generate_pdb(sequence.pdb_content)}>Download Pdb file</DropdownMenuItem>
             <DropdownMenuItem onClick={generate3D_view}>3D visualization</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
