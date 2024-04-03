@@ -80,6 +80,7 @@ const generateRandomSequence = (
     let entire_sequence = {};
     let ribContent = "title RIBOSOME\n";
     ribContent += "default helix\n";
+    let pdbContent = "";
 
     for (let i = 0; i < sequenceLength; i++) {
         const filteredAminoAcids = aminoAcids.filter(
@@ -98,7 +99,19 @@ const generateRandomSequence = (
         const phi_angle = random.float(-90, 90);
         const chi_angle = random.float(-90, 90);
         
-        ribContent += `res ${code} phi ${phi_angle} psi ${chi_angle} \n`;
+        const chainID = 'A'; // You can customize the chain ID as needed
+
+        // Increment atom serial number for each new atom
+        const atomSerial = i + 1;
+
+        // Generate coordinates for the atoms
+        const x = random.float(-30, 30).toFixed(3);
+        const y = random.float(-30, 30).toFixed(3);
+        const z = random.float(-30, 30).toFixed(3);
+
+        ribContent += `res ${code} phi ${phi_angle.toFixed(2)} psi ${chi_angle.toFixed(2)} \n`;
+
+        pdbContent += `ATOM  ${atomSerial.toString().padStart(5, ' ')} ${threeLetterCode.padEnd(4, ' ')} ${chainID}   ${i + 1}    ${x.padStart(8, ' ')}${y.padStart(8, ' ')}${z.padStart(8, ' ')}  1.00  0.00          ${threeLetterCode}\n`;
     }
 
     const phi = random.float(-90, 90);
@@ -110,6 +123,7 @@ const generateRandomSequence = (
         phi_angle: phi,
         chi_angle: chi,
         rib_content: ribContent,
+        pdb_content: pdbContent,
     };
 
     console.log(ribContent);

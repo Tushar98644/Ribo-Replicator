@@ -33,7 +33,7 @@ export const MoleculeViewer = () => {
         let pdbUri = '';
         pdbUri = 'https://files.rcsb.org/download/1CRN.pdb';
         fetch(pdbUri)
-          .then(response => {
+        .then(response => {
             if (!response.ok) {
               throw new Error(`Failed to load PDB: ${response.statusText}`);
             }
