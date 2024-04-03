@@ -60,7 +60,7 @@ const generate_rib = async (rib_content: any) => {
   };
     await axios.post('/api/rib_output', rib_content, config)
       .then(response => {
-        const blob = new Blob([response.data], { type: 'application/octet-stream' });
+        const blob = new Blob([rib_content], { type: 'application/octet-stream' });
 
         // Create a URL for the Blob object
         const url = window.URL.createObjectURL(blob);
