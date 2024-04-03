@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react';
 
-export default function Viewer() {
+export const MoleculeViewer = () => {
  useEffect(() => {
     const loadScripts = async () => {
       await new Promise((resolve, reject) => {

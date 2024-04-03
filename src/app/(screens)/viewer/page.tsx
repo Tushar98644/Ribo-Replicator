@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import MoleculeViewer from "@/components/MoleculeViewer";
+import {MoleculeViewer} from "@/components/MoleculeViewer";
 
 const Viewer = () => {
     return ( 
