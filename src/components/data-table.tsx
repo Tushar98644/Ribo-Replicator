@@ -83,11 +83,13 @@ const generate_rib = async (rib_content: any) => {
         console.log(`There was an error sending the request: ${error}`)
       })
     console.log("Rib file generated")
-
   }
   catch (e) {
     console.log(`Error in generating rib file: ${e}`)
   }
+}
+
+const generate3D_view = async () => {
 }
 
 export const columns: ColumnDef<Sequence>[] = [
@@ -182,7 +184,7 @@ export const columns: ColumnDef<Sequence>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => generate_rib(sequence.rib_content)}>Download Rib file</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem onClick={generate3D_view}>3D visualization</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

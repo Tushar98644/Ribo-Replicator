@@ -1,28 +1,43 @@
-import React, { useEffect } from 'react';
+'use client'
+import { useEffect } from 'react';
 
-const ThreeDmolViewer = () => {
-  useEffect(() => {
-    const loadScript = (url: string) => {
-      const script = document.createElement('script');
-      script.src = url;
-      script.async = false;
-      document.body.appendChild(script);
+export default function Viewer() {
+ useEffect(() => {
+    const loadScripts = async () => {
+      await new Promise((resolve, reject) => {
+        const script1 = document.createElement('script');
+        script1.src = 'https://3Dmol.org/build/3Dmol-min.js';
+        script1.onload = resolve;
+        script1.onerror = reject;
+        document.body.appendChild(script1);
+      });
+
+      await new Promise((resolve, reject) => {
+        const script2 = document.createElement('script');
+        script2.src = 'https://3Dmol.org/build/3Dmol.ui-min.js';
+        script2.onload = resolve;
+        script2.onerror = reject;
+        document.body.appendChild(script2);
+      });
     };
 
-    loadScript('https://3Dmol.org/build/3Dmol-min.js');
-    loadScript('https://3Dmol.org/build/3Dmol.ui-min.js');
-  }, []);
+    loadScripts().then(() => {
+        // @ts-ignore
+      if (window?.$3Dmol) {
+        // @ts-ignore
+        window?.$3Dmol.autoload();
+      }
+    });
 
-  return (
-    <div
-      style={{ height: '400px', width: '400px', position: 'relative' }}
-      className="viewer_3Dmoljs"
-      data-pdb="2POR"
-      data-backgroundcolor="white"
-      data-style="stick"
-      data-ui="true"
-    />
-  );
-};
+    return () => {
+      const script1 = document.querySelector('script[src="https://3Dmol.org/build/3Dmol-min.js"]');
+      const script2 = document.querySelector('script[src="https://3Dmol.org/build/3Dmol.ui-min.js"]');
+      script1 && script1.remove();
+      script2 && script2.remove();
+    };
+ }, []);
 
-export default ThreeDmolViewer;
+ return (
+    <div className='viewer_3Dmoljs relative h-screen w-screen' data-pdb='2POR' data-backgroundcolor='0xffffff' data-style='stick' data-ui='true'></div>
+ );
+}
