@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 export const MoleculeViewer = () => {
- useEffect(() => {
+  useEffect(() => {
     const loadScripts = async () => {
       await new Promise((resolve, reject) => {
         const script1 = document.createElement('script');
@@ -22,10 +22,31 @@ export const MoleculeViewer = () => {
     };
 
     loadScripts().then(() => {
-        // @ts-ignore
+      // @ts-ignore
       if (window?.$3Dmol) {
         // @ts-ignore
         window?.$3Dmol.autoload();
+        // @ts-ignore
+        const viewer = $3Dmol.createViewer('viewer-container', {
+          backgroundColor: 'white',
+        });
+        let pdbUri = '';
+        pdbUri = 'https://files.rcsb.org/download/1CRN.pdb';
+        fetch(pdbUri)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Failed to load PDB: ${response.statusText}`);
+            }
+            return response.text();
+          })
+          .then(data => {
+            viewer.addModel(data, "pdb"); 
+            viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
+            viewer.zoomTo();
+            viewer.render();
+            viewer.zoom(1.2, 1000); 
+          })
+          .catch(error => console.error(`Failed to load PDB ${pdbUri}: ${error}`));
       }
     });
 
@@ -35,9 +56,9 @@ export const MoleculeViewer = () => {
       script1 && script1.remove();
       script2 && script2.remove();
     };
- }, []);
+  }, []);
 
- return (
-    <div className='viewer_3Dmoljs relative h-screen w-screen' data-pdb='2POR' data-backgroundcolor='0xffffff' data-style='stick' data-ui='true'></div>
- );
+  return (
+    <div id="viewer-container" className='viewer-container relative h-screen w-screen' data-backgroundcolor='0xffffff' data-style='stick' data-ui='true'></div>
+  );
 }
