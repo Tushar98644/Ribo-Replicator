@@ -29,7 +29,7 @@ export const Tab = () => {
     const [numberOfSequences, setNumberOfSequences] = useState<number>();
     const router = useRouter();
 
-    const generateSequences = () => {
+    const generateSequences = async() => {
         const data = {
             excludedAminoAcids,
             sequenceLength,
@@ -40,7 +40,7 @@ export const Tab = () => {
                 'Content-Type': 'application/json'
             }
         }
-        axios.post('/api/generate_sequences', data , config)
+        await axios.post('/api/generate_sequences', data , config)
             .then(response => {
                 console.log(`The request was successful: ${response}`);
                 router.push('/result');
@@ -49,6 +49,7 @@ export const Tab = () => {
                 console.log(`There was an error sending the request: ${error}`)
             })
     }
+    
     return (
         <Tabs defaultValue="account" className="w-[400px] px-6">
             <TabsList className="grid w-full grid-cols-2">

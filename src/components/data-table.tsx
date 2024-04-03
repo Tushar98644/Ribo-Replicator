@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useEffect , useState } from "react"
+import { useEffect, useState } from "react"
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -47,6 +47,47 @@ export type Sequence = {
   sequence: string
   phi_angle: number
   chi_angle: number
+  rib_content: string
+}
+
+const generate_rib = async (rib_content: any) => {
+  try {
+    const config = {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      responseType: 'blob' as 'json' // Set responseType to 'blob' to receive binary data
+  };
+    await axios.post('/api/rib_output', rib_content, config)
+      .then(response => {
+        const blob = new Blob([response.data], { type: 'application/octet-stream' });
+
+        // Create a URL for the Blob object
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a link element to trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'output.rib'); 
+
+        // Append the link to the document body and click it programmatically
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up by removing the link and revoking the URL
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        console.log(`The request was successful: ${response}`);
+      })
+      .catch(error => {
+        console.log(`There was an error sending the request: ${error}`)
+      })
+    console.log("Rib file generated")
+
+  }
+  catch (e) {
+    console.log(`Error in generating rib file: ${e}`)
+  }
 }
 
 export const columns: ColumnDef<Sequence>[] = [
@@ -140,7 +181,7 @@ export const columns: ColumnDef<Sequence>[] = [
               Copy sequence
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => generate_rib(sequence.rib_content)}>Download Rib file</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -149,8 +190,8 @@ export const columns: ColumnDef<Sequence>[] = [
   },
 ]
 
-export const DataTable =()=> {
-  const [sequences , setSequences] = useState([]);
+export const DataTable = () => {
+  const [sequences, setSequences] = useState([]);
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
@@ -182,13 +223,13 @@ export const DataTable =()=> {
     const fetchData = async () => {
       try {
         await axios.get('/api/generate_sequences')
-        .then(data => {
+          .then(data => {
             console.log(`The list of generated random sequences : ${data}`)
             setSequences(data.data);
-        })
-        .catch(error => {
+          })
+          .catch(error => {
             console.log(`There was an error sending the Get request: ${error}`)
-        })
+          })
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -245,9 +286,9 @@ export const DataTable =()=> {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}
