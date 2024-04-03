@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Provider } from "@/providers/Provider";
+import Head from "next/head";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -23,6 +24,10 @@ export default async function RootLayout({
   return (
 
     <html lang="en">
+        {/* <Head>
+          <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+          <script src="https://3Dmol.org/build/3Dmol.ui-min.js"></script>
+        </Head> */}
       <body className={cn(
         "min-h-screen bg-background font-sans antialiased",
         fontSans.variable

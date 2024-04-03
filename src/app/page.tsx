@@ -3,6 +3,7 @@ import Link from "next/link";
 import UserAuthForm from "@/components/forms/user-auth-form";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import ThreeDmolViewer from "@/components/MoleculeViewer";
 
 export default function AuthenticationPage() {
   return (
