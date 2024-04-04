@@ -4,7 +4,7 @@ import {MoleculeViewer} from "@/components/MoleculeViewer";
 const Viewer = () => {
     return ( 
         <div className="bg-white">
-                    <MoleculeViewer />
+        <MoleculeViewer />
         </div>
      );
 }

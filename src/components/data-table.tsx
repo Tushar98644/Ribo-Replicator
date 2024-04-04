@@ -41,6 +41,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import axios from "axios"
+import { useRouter } from "next/navigation"
 
 export type Sequence = {
   id: number
@@ -53,36 +54,23 @@ export type Sequence = {
 
 const generate_rib = async (rib_content: any) => {
   try {
-    const config = {
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      responseType: 'blob' as 'json' // Set responseType to 'blob' to receive binary data
-  };
-    await axios.post('/api/rib_output', rib_content, config)
-      .then(response => {
-        const blob = new Blob([rib_content], { type: 'application/octet-stream' });
+    const blob = new Blob([rib_content], { type: 'application/octet-stream' });
 
-        // Create a URL for the Blob object
-        const url = window.URL.createObjectURL(blob);
+    // Create a URL for the Blob object
+    const url = window.URL.createObjectURL(blob);
 
-        // Create a link element to trigger the download
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'output.rib'); 
+    // Create a link element to trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'output.rib');
 
-        // Append the link to the document body and click it programmatically
-        document.body.appendChild(link);
-        link.click();
+    // Append the link to the document body and click it programmatically
+    document.body.appendChild(link);
+    link.click();
 
-        // Clean up by removing the link and revoking the URL
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        console.log(`The request was successful: ${response}`);
-      })
-      .catch(error => {
-        console.log(`There was an error sending the request: ${error}`)
-      })
+    // Clean up by removing the link and revoking the URL
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
     console.log("Rib file generated")
   }
   catch (e) {
@@ -91,149 +79,34 @@ const generate_rib = async (rib_content: any) => {
 }
 
 const generate_pdb = async (pdb_content: any) => {
+
   try {
-    const config = {
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      responseType: 'blob' as 'json' // Set responseType to 'blob' to receive binary data
-  };
-    await axios.post('/api/pdb_output', pdb_content, config)
-      .then(response => {
-        const blob = new Blob([pdb_content], { type: 'application/octet-stream' });
+    const blob = new Blob([pdb_content], { type: 'application/octet-stream' });
 
-        // Create a URL for the Blob object
-        const url = window.URL.createObjectURL(blob);
+    // Create a URL for the Blob object
+    const url = window.URL.createObjectURL(blob);
 
-        // Create a link element to trigger the download
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'output.pdb'); 
+    // Create a link element to trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'output.pdb');
 
-        // Append the link to the document body and click it programmatically
-        document.body.appendChild(link);
-        link.click();
+    // Append the link to the document body and click it programmatically
+    document.body.appendChild(link);
+    link.click();
 
-        // Clean up by removing the link and revoking the URL
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        console.log(`The request was successful: ${response}`);
-      })
-      .catch(error => {
-        console.log(`There was an error sending the request: ${error}`)
-      })
-    console.log("Pdb file generated")
+    // Clean up by removing the link and revoking the URL
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    console.log("Pdb file generated");
   }
   catch (e) {
     console.log(`Error in generating pdb file: ${e}`)
   }
 }
 
-const generate3D_view = async () => {
-}
-
-export const columns: ColumnDef<Sequence>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: "Id",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("id")}</div>
-    ),
-  },
-  {
-    accessorKey: "sequence",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Sequence
-          <CaretSortIcon className="" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="uppercase ml-4">{row.getValue("sequence")}</div>,
-  },
-  {
-    accessorKey: "phi_angle",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Phi Angle
-          <CaretSortIcon className="h-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("phi_angle")}</div>,
-  },
-  {
-    accessorKey: "chi_angle",
-    header: () => <div className="text-right">Chi Angle</div>,
-    cell: ({ row }) => {
-      const chi_angle = parseFloat(row.getValue("chi_angle"))
-
-      return <div className="text-right font-medium">{chi_angle}</div>
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const sequence = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(sequence.sequence)}
-            >
-              Copy sequence
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => generate_rib(sequence.rib_content)}>Download Rib file</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => generate_pdb(sequence.pdb_content)}>Download Pdb file</DropdownMenuItem>
-            <DropdownMenuItem onClick={generate3D_view}>3D visualization</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
-
 export const DataTable = () => {
+  const router = useRouter();
   const [sequences, setSequences] = useState([]);
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -241,7 +114,133 @@ export const DataTable = () => {
   )
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState({});
+
+  const generate3DView = async (pdb_content: any) => {
+    try {
+      // const config = {
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      // }
+      // const response = await axios.post('/api/generate_view', pdb_content,config)
+      // console.log(`The data sent to api is ${pdb_content}`)
+      // console.log(`The response from the server is: ${response}`);
+      
+      // if (response.status != 200) {
+      //   throw new Error(`Failed to generate 3D view: ${response.statusText}`);
+      // }
+      
+      // const pdbData = response.data;
+  
+      // console.log(`Received PDB data: ${pdbData}`);
+      router.push('/viewer');
+    } catch (error) {
+      console.error(`Failed to load PDB: ${error}`);
+    }
+  };
+
+  const columns: ColumnDef<Sequence>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "id",
+      header: "Id",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("id")}</div>
+      ),
+    },
+    {
+      accessorKey: "sequence",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Sequence
+            <CaretSortIcon className="" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="uppercase ml-4">{row.getValue("sequence")}</div>,
+    },
+    {
+      accessorKey: "phi_angle",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Phi Angle
+            <CaretSortIcon className="h-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="lowercase">{row.getValue("phi_angle")}</div>,
+    },
+    {
+      accessorKey: "chi_angle",
+      header: () => <div className="text-right">Chi Angle</div>,
+      cell: ({ row }) => {
+        const chi_angle = parseFloat(row.getValue("chi_angle"))
+
+        return <div className="text-right font-medium">{chi_angle}</div>
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const sequence = row.original;
+        console.log(`The pdb content is: ${sequence.pdb_content}`)
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(sequence.sequence)}
+              >
+                Copy sequence
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => generate_rib(sequence.rib_content)}>Download Rib file</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => generate_pdb(sequence.pdb_content)}>Download Pdb file</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => generate3DView(sequence.pdb_content)}>3D visualization</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
+    },
+  ]
 
   const table = useReactTable({
     data: sequences,

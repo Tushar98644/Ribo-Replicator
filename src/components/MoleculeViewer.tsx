@@ -1,5 +1,17 @@
 'use client'
+import axios from 'axios';
 import { useEffect } from 'react';
+
+
+async function getRandomAvailablePDBCode() {
+  // List of available PDB codes (replace with actual list)
+  const availablePDBCodes = ['1AIY', '1BEN', '1EV3', '1EV6', '1EVR', '1FU2','1FUB','1G7A','1G7B','1GUJ','1J73','1JCA','1MSO','1OS3','1SF1','1TRZ','1TYL'];
+
+  // Randomly select a PDB code from the list
+  const randomIndex = Math.floor(Math.random() * availablePDBCodes.length);
+  console.log(`Random PDB code: ${availablePDBCodes[randomIndex]}`);
+  return availablePDBCodes[randomIndex];
+}
 
 export const MoleculeViewer = () => {
   useEffect(() => {
@@ -21,7 +33,7 @@ export const MoleculeViewer = () => {
       });
     };
 
-    loadScripts().then(() => {
+    loadScripts().then(async () => {
       // @ts-ignore
       if (window?.$3Dmol) {
         // @ts-ignore
@@ -30,23 +42,30 @@ export const MoleculeViewer = () => {
         const viewer = $3Dmol.createViewer('viewer-container', {
           backgroundColor: 'white',
         });
-        let pdbUri = '';
-        pdbUri = 'https://files.rcsb.org/download/1CRN.pdb';
-        fetch(pdbUri)
-        .then(response => {
-            if (!response.ok) {
+
+        const pdbCode = await getRandomAvailablePDBCode();
+        if (!pdbCode) {
+          console.error('No available PDB codes found.');
+          return;
+        }
+
+        const pdbUri = `https://files.rcsb.org/download/${pdbCode}.pdb`;
+
+        await axios.get(pdbUri)
+          .then(response => {
+            if (response.status !== 200) {
               throw new Error(`Failed to load PDB: ${response.statusText}`);
             }
-            return response.text();
+            return response.data;
           })
           .then(data => {
-            viewer.addModel(data, "pdb"); 
+            viewer.addModel(data, 'pdb');
             viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
             viewer.zoomTo();
             viewer.render();
-            viewer.zoom(1.2, 1000); 
+            viewer.zoom(1.2, 1000);
           })
-          .catch(error => console.error(`Failed to load PDB ${pdbUri}: ${error}`));
+          .catch(error => console.log(`Failed to load PDB ${pdbUri}: ${error}`));
       }
     });
 
