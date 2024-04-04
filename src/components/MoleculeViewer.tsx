@@ -4,10 +4,8 @@ import { useEffect } from 'react';
 
 
 async function getRandomAvailablePDBCode() {
-  // List of available PDB codes (replace with actual list)
   const availablePDBCodes = ['1AIY', '1BEN', '1EV3', '1EV6', '1EVR', '1FU2','1FUB','1G7A','1G7B','1GUJ','1J73','1JCA','1MSO','1OS3','1SF1','1TRZ','1TYL'];
 
-  // Randomly select a PDB code from the list
   const randomIndex = Math.floor(Math.random() * availablePDBCodes.length);
   console.log(`Random PDB code: ${availablePDBCodes[randomIndex]}`);
   return availablePDBCodes[randomIndex];
