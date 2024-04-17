@@ -266,7 +266,7 @@ export const DataTable = () => {
       try {
         await axios.get('/api/generate_sequences')
           .then(data => {
-            console.log(`The list of generated random sequences : ${data}`)
+            console.log(`The list of generated random sequences : ${data.data}`)
             setSequences(data.data);
           })
           .catch(error => {
