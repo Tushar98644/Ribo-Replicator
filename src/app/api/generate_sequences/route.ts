@@ -78,8 +78,8 @@ const generateRandomSequence = (
     ];
     let randomSequence = "";
     let entire_sequence = {};
-    let ribContent = "title RIBOSOME\n";
-    ribContent += "default helix\n";
+    let ribContent = "title SEQUENCE\n \n";
+    ribContent += "default helix\n \n";
     let pdbContent = "";
 
     for (let i = 0; i < sequenceLength; i++) {
@@ -94,7 +94,7 @@ const generateRandomSequence = (
         randomSequence += randomAminoAcid;
 
         const threeLetterCode = aminoAcidThreeLetterCodes[randomAminoAcid];
-        const code = threeLetterCode.toLowerCase();
+        const code = threeLetterCode.toUpperCase();
 
         const phi_angle = random.float(-90, 90);
         const chi_angle = random.float(-90, 90);
