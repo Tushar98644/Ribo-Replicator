@@ -83,10 +83,8 @@ const generate_pdb = async (pdb_content: any) => {
   try {
     const blob = new Blob([pdb_content], { type: 'application/octet-stream' });
 
-    // Create a URL for the Blob object
     const url = window.URL.createObjectURL(blob);
 
-    // Create a link element to trigger the download
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', 'output.pdb');
@@ -118,23 +116,28 @@ export const DataTable = () => {
 
   const generate3DView = async (pdb_content: any) => {
     try {
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // }
-      // const response = await axios.post('/api/generate_view', pdb_content,config)
-      // console.log(`The data sent to api is ${pdb_content}`)
-      // console.log(`The response from the server is: ${response}`);
-      
-      // if (response.status != 200) {
-      //   throw new Error(`Failed to generate 3D view: ${response.statusText}`);
-      // }
-      
-      // const pdbData = response.data;
-  
-      // console.log(`Received PDB data: ${pdbData}`);
-      router.push('/viewer');
+      console.log(`The data sent to api is ${pdb_content}`);
+      const data = {
+        pdb_content: pdb_content
+      };
+      console.log(`The data sent to generate_view api is ${data}`);
+      await axios.post('/api/generate_view', data , {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => {
+          if (response.status !== 200) {
+            throw new Error(`Failed to load PDB: ${response.statusText}`);
+          }
+          console.log(`Loaded PDB data successfully. The recieved data is ${response.data}`);
+          router.push('/viewer');
+          return response.data;
+        }
+        )
+        .catch(error => {
+          console.log(`There was an error sending the Post request: ${error}`)
+        })
     } catch (error) {
       console.error(`Failed to load PDB: ${error}`);
     }

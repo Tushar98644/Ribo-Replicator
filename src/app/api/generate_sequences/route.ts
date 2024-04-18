@@ -160,9 +160,6 @@ export const POST = async (req: Request) => {
       sequenceLength,
       numberOfSequences,
     };
-    // console.log(
-    //   `Excluded Amino Acids: ${excludedAminoAcids} and Sequence Length: ${sequenceLength} , Number of Sequences: ${numberOfSequences}`
-    // );
 
     return new Response("Success", { status: 200 });
   } catch (e) {
@@ -181,7 +178,7 @@ export const GET = async () => {
       excludedAminoAcids
     );
 
-    console.log(`The data sent to the client is: ${JSON.stringify(randomSequences)}`);
+    // console.log(`The data sent to the client is: ${JSON.stringify(randomSequences)}`);
     return new Response(JSON.stringify(randomSequences), { status: 200 });
   } catch (e) {
     console.log(`Error in GET request: ${e}`);

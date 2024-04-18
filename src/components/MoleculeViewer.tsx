@@ -2,15 +2,6 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 
-
-async function getRandomAvailablePDBCode() {
-  const availablePDBCodes = ['1AIY', '1BEN', '1EV3', '1EV6', '1EVR', '1FU2', '1FUB', '1G7A', '1G7B', '1GUJ', '1J73', '1JCA', '1MSO', '1OS3', '1SF1', '1TRZ', '1TYL'];
-
-  const randomIndex = Math.floor(Math.random() * availablePDBCodes.length);
-  console.log(`Random PDB code: ${availablePDBCodes[randomIndex]}`);
-  return availablePDBCodes[randomIndex];
-}
-
 export const MoleculeViewer = () => {
   useEffect(() => {
     console.log('useEffect triggered');
@@ -46,33 +37,38 @@ export const MoleculeViewer = () => {
             backgroundColor: 'white',
           });
 
-          const pdbCode = await getRandomAvailablePDBCode();
-          if (!pdbCode) {
-            console.error('No available PDB codes found.');
-            return;
-          }
-
-          const pdbUri = `https://files.rcsb.org/download/${pdbCode}.pdb`;
-
-          await axios.get(pdbUri)
-            .then(response => {
-              if (response.status !== 200) {
-                throw new Error(`Failed to load PDB: ${response.statusText}`);
+          try {
+             const config = {
+                headers: {
+                  'Content-Type': 'application/json',
+                }
               }
-              return response.data;
-            })
-            .then(data => {
-              viewer.addModel(data, 'pdb');
-              viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
-              viewer.zoomTo();
-              viewer.render();
-              viewer.zoom(1.2, 1000);
-            })
-            .catch(error => console.log(`Failed to load PDB ${pdbUri}: ${error}`));
+              await axios.get('/api/generate_view',config)
+              .then((response) => {
+                console.log(response.data);
+                const dataFile = '/src/components/output.pdb';
+                viewer.addModel(dataFile, 'pdb');
+                viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
+                viewer.zoomTo();
+                viewer.render();
+                viewer.zoom(1.2, 1000);
+                // const command = `pymol ${dataFile}`;
+              })
+              .catch((error) => {
+                console.log(`Failed to load PDB: ${error}`);
+              });
+              // const dataFile = '/src/components/output.pdb';
+              // viewer.addModel(dataFile, 'pdb');
+              // viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
+              // viewer.zoomTo();
+              // viewer.render();
+              // viewer.zoom(1.2, 1000);
+          }
+          catch (error) {
+            console.log(`Failed to load PDB: ${error}`);
+          }
         }
       }
-      // @ts-ignore
-
     });
 
     return () => {
