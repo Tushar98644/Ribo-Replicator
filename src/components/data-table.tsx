@@ -113,6 +113,7 @@ export const DataTable = () => {
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({});
+  const [energy_details , setEnergyDetails] = useState({} as any);
 
   const generate3DView = async (pdb_content: any) => {
     try {
@@ -121,12 +122,12 @@ export const DataTable = () => {
         pdb_content: pdb_content
       };
       console.log(`The data sent to generate_view api is ${data}`);
-      await axios.post('/api/generate_view', data , {
+      await axios.post('/api/generate_view', data, {
         headers: {
           'Content-Type': 'application/json',
         }
       })
-      .then(response => {
+        .then(response => {
           if (response.status !== 200) {
             throw new Error(`Failed to load PDB: ${response.statusText}`);
           }
@@ -142,6 +143,35 @@ export const DataTable = () => {
       console.error(`Failed to load PDB: ${error}`);
     }
   };
+
+  const energy_minimization = async (pdb_content: any) => {
+    try {
+      console.log(`The data sent to api is ${pdb_content}`);
+      const data = {
+        pdb_content: pdb_content
+      };
+      console.log(`The data sent to generate_view api is ${data}`);
+      await axios.post('/api/energy_minimizer', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+        .then(response => {
+          if (response.status !== 200) {
+            throw new Error(`Failed to load PDB: ${response.statusText}`);
+          }
+          console.log(`The data recieved from the energy minimizer api is: ${response.data}`)
+          setEnergyDetails(response.data);
+          return response.data;
+        }
+        )
+        .catch(error => {
+          console.log(`There was an error sending the Post request: ${error}`)
+        })
+    } catch (error) {
+      console.error(`Failed to load PDB: ${error}`);
+    }
+  }
 
   const columns: ColumnDef<Sequence>[] = [
     {
@@ -238,6 +268,7 @@ export const DataTable = () => {
               <DropdownMenuItem onClick={() => generate_rib(sequence.rib_content)}>Download Rib file</DropdownMenuItem>
               <DropdownMenuItem onClick={() => generate_pdb(sequence.pdb_content)}>Download Pdb file</DropdownMenuItem>
               <DropdownMenuItem onClick={() => generate3DView(sequence.pdb_content)}>3D visualization</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => energy_minimization(sequence.pdb_content)}>Energy Minimization</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
