@@ -113,7 +113,6 @@ export const DataTable = () => {
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({});
-  const [energy_details , setEnergyDetails] = useState({} as any);
 
   const generate3DView = async (pdb_content: any) => {
     try {
@@ -146,11 +145,11 @@ export const DataTable = () => {
 
   const energy_minimization = async (pdb_content: any) => {
     try {
-      console.log(`The data sent to api is ${pdb_content}`);
+      console.log(`The data sent to the energy_minimizer api is ${pdb_content}`);
       const data = {
         pdb_content: pdb_content
       };
-      console.log(`The data sent to generate_view api is ${data}`);
+      console.log(`The data sent to energy_minimizer api is ${data}`);
       await axios.post('/api/energy_minimizer', data, {
         headers: {
           'Content-Type': 'application/json',
@@ -158,10 +157,10 @@ export const DataTable = () => {
       })
         .then(response => {
           if (response.status !== 200) {
-            throw new Error(`Failed to load PDB: ${response.statusText}`);
+            throw new Error(`Failed to recieve pdb data: ${response.statusText}`);
           }
           console.log(`The data recieved from the energy minimizer api is: ${response.data}`)
-          setEnergyDetails(response.data);
+          router.push('/energy');
           return response.data;
         }
         )
@@ -169,7 +168,7 @@ export const DataTable = () => {
           console.log(`There was an error sending the Post request: ${error}`)
         })
     } catch (error) {
-      console.error(`Failed to load PDB: ${error}`);
+      console.error(`Failed to recieve pdb data: ${error}`);
     }
   }
 
